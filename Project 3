@@ -1,0 +1,171 @@
+#include <iostream>
+#include <iomanip>
+#include <string>
+#include <fstream>
+
+void one();
+double two(std::string[], double[]);
+void three();
+void four(std::string[], double []);
+double five(double []);
+std::string six(std::string []);
+
+
+int main(){
+    const int SIZE = 100;
+    std::string names[SIZE];
+    double earnings[SIZE];
+    int choice;
+
+    
+    std::cout << std::fixed << std::showpoint << std::setprecision(2);
+
+    one();
+    two(names, earnings);
+
+
+    do {
+        three();
+        std::cout << "Enter your choice: " << std::endl;
+        std::cin >> choice;
+        while (choice < 1 || choice > 4){
+            std::cout << "That is an incorrect choice. Please try again. " << std::endl;
+            three();
+            std::cout << "Enter your choice: " << std::endl;
+            std::cin >> choice;
+        }
+        if (choice == 1)
+            four(names, earnings);
+        else if (choice == 2)
+            five(earnings);
+        else if (choice == 3)
+            six(names);
+        else if (choice == 4){
+            std::cout << "Hope you enjoyed this program!" << std::endl;
+            return 0;
+        }
+    }while (choice != 5);
+
+
+
+}
+
+void one (){
+
+    std::cout << "This program will help you get information about the Top 100 Fortnite Players" << std::endl;
+    std::cout << "The data was compiled from 366 tournaments. Range: 2/27/2018 - 7/16/2019" << std::endl;
+    std::cout << "Player rank is based on total winnings from these tournaments" << std::endl;
+    std::cout << "Source: https://www.esportsearnings.com/games/534-fortnite/top-players" << std::endl;
+    std::cout << std::endl;
+
+}
+
+double two(std::string names[], double earnings[]){
+
+    int size = 100;
+    std::ifstream inData;
+    inData.open("fortnite.txt");
+
+    for(int count = 0; count < size; count++){
+        if (inData >> names[count])
+            inData >> earnings[count];
+    }
+    inData.close();
+
+
+    return 0;
+}
+
+void three() {
+
+    std::cout << "Enter the number from the choices below:" << std::endl;
+    std::cout << "(1) Show the #1 and #100 player + winnings" << std::endl;
+    std::cout << "(2) Show Total and Average winnings" << std::endl;
+    std::cout << "(3) Find a player in Top 100 by ID" << std::endl;
+    std::cout << "(4) EXIT THIS PROGRAM" << std::endl;
+    std::cout << std::endl;
+
+}
+
+void four(std::string names[],double earnings[]){
+
+
+    int size = 100;
+    double max = 100000;
+    double min = 99999;
+    std::string top;
+    std::string bot;
+    for (int count = 0; count < size; count++){
+        if (max < earnings[count]){
+            max = earnings[count];
+            top = names[count];
+        }
+        if (min > earnings[count]){
+            min = earnings[count];
+            bot = names[count];
+        }
+    }
+    std::cout << "The first player in the Top 100 list is: " << top << std::endl;
+    std::cout << "The total winnings for this player: $" << max << std::endl;
+    std::cout << std::endl;
+    std::cout << "The last player in the Top 100 list is: " << bot << std::endl;
+    std::cout << "The total winnings for this player: $" << min << std::endl;
+    std::cout << std::endl;
+    
+}
+
+double five(double earnings[]){
+
+    int size = 100;
+    double total = 0;
+    double avg;
+    int index = 0;
+    for(int count = 0; count < size; count++){
+        total += earnings[count];
+        index++;
+    }
+    avg = total / index;
+
+    std::cout << "Total winnings of all Top 100 players is: $" << total << std::endl;
+    std::cout << "Average winnings of Top 100 players is: $" << avg << std::endl;
+    std::cout << std::endl;
+
+
+}
+
+std::string six(std::string names[]){
+
+    std::string newName;
+    int size = 100;
+    int first = 0;
+    int last = size -1;
+    int mid;
+    int position = -1;
+    bool found = false;
+
+    std::cout << "Enter the Player ID you wish to search for: " << std::endl;
+    std::cin >> newName;
+
+    while (!found && first <= last){
+        mid = (first + last) / 2;
+        if (names[mid] == newName){
+            found = true;
+            position = mid;
+        }
+        else if (names[mid] > newName)
+            last = mid - 1;
+        else
+            first = mid + 1;
+    }
+
+    if (found == true){
+        std::cout << "That player is in the Top 100!" << std::endl;
+        std::cout << std::endl;
+    }
+    else
+        std::cout << "That player is NOT in the Top 100" << std::endl;
+
+
+
+
+}
