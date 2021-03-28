@@ -1,44 +1,141 @@
 #include <iostream>
-#include <iomanip>
+#include <fstream>
 #include <string>
-using namespace std;
 
 int main() {
 
-    double APPLES = 2.0;
-    double ORANGES = 1.0;
-    int BRANDY = 60;
-    int ORANGE_JUICE = 120;
-    int WINE = 750;
+    std::string name;
+    int choice;
+    int count = 0;
+    int count2 = 0;
+    int num = 0;
+    int total = 0;
+    int total2 = 0;
+    const int ROW = 10;
 
-    string favorite_wine;
-    int servings;
+    std::cout << "This program will search a file for your number and provide some statistics on the"
+              << " numbers in the file" << std::endl;
+    std::cout << "Enter the name of the file you wish to search (numbers1.txt OR numbers2.txt): " << std::endl;
+    std::cin >> name;
+
+    while ((name != "numbers1.txt") && (name != "numbers2.txt"))
+    {
+        std::cout << "Invalid file name. Please try again." << std::endl;
+        std::cout << "Enter the name of the file you wish to search (numbers1.txt OR numbers2.txt): " << std::endl;
+        std::cin >> name;
+    }
+
+    if (name == "numbers1.txt"){
+        std::ifstream inData;
+        inData.open("numbers1.txt");
+        std::cout << "Enter the integer that you wish to search for (0 to 9): " << std::endl;
+        std::cin >> choice;
+
+        while (!std::cin){
+            std::cin.clear();
+            std::cin.ignore(5,'\n');
+            std::cout << "You must enter an integer (whole number) from 0 to 9. Please try again." << std::endl;
+            std::cout << "Enter the integer that you wish to search for (0 to 9): " << std::endl;
+            std::cin >> choice;
+        }
+
+        while (choice < 0 || choice > 9){
+            std::cout << "You must enter an integer (whole number) from 0 to 9. Please try again." << std::endl;
+            std::cout << "Enter the integer that you wish to search for (0 to 9): " << std::endl;
+            std::cin >> choice;
+        }
+
+        while (!std::cin){
+            std::cin.clear();
+            std::cin.ignore(5,'\n');
+            std::cout << "You must enter an integer (whole number) from 0 to 9. Please try again." << std::endl;
+            std::cout << "Enter the integer that you wish to search for (0 to 9): " << std::endl;
+            std::cin >> choice;
+        }
+
+        while (!inData.eof()) {
+            inData >> num;
+            total += num;
+            count++;
+            if (count % ROW == 0)
+                total2 += num;
+            if (choice == num)
+                count2++;
+        }
+        
+        std::cout << "There are " << count << " integers in the file, organized into " << count / ROW << " rows"
+                  << std::endl;
+        std::cout << "The sum of all integers in the file: " << total << std::endl;
+        std::cout << "The sum of the integers located at the end of each row: " << total2 << std::endl;
+        std::cout << "Your number was found " << count2 << " times" << std::endl;
+        if (choice == num)
+            std::cout << "Fun fact: Your integer was the last number in the file!";
+        else
+            std::cout << "The number " << num << " was the last number in the file";
+
+        inData.close();
+    }
+    else
+    {
+        std::ifstream inData;
+        inData.open("numbers2.txt");
+        std::cout << "Enter the integer that you wish to search for (0 to 9): " << std::endl;
+        std::cin >> choice;
+
+        while (!std::cin){
+            std::cin.clear();
+            std::cin.ignore(5,'\n');
+            std::cout << "You must enter an integer (whole number) from 0 to 9. Please try again." << std::endl;
+            std::cout << "Enter the integer that you wish to search for (0 to 9): " << std::endl;
+            std::cin >> choice;
+        }
+
+        while (choice < 0 || choice > 9) {
+            std::cout << "You must enter an integer (whole number) from 0 to 9. Please try again." << std::endl;
+            std::cout << "Enter the integer that you wish to search for (0 to 9): " << std::endl;
+            std::cin >> choice;
+        }
+
+        while (!std::cin){
+            std::cin.clear();
+            std::cin.ignore(5,'\n');
+            std::cout << "You must enter an integer (whole number) from 0 to 9. Please try again." << std::endl;
+            std::cout << "Enter the integer that you wish to search for (0 to 9): " << std::endl;
+            std::cin >> choice;
+        }
+
+        while (!inData.eof()){
+            inData >> num;
+            total += num;
+            count++;
+            if (count % ROW == 0)
+                total2 += num;
+            if (choice == num)
+                count2++;
+        }
+
+        std::cout << "There are " << count << " integers in the file, organized into " << count / ROW << " rows"
+                  << std::endl;
+        std::cout << "The sum of all integers in the file: " << total << std::endl;
+        std::cout << "The sum of the integers located at the end of each row: " << total2 << std::endl;
+        std::cout << "Your number was found " << count2 << " times" << std::endl;
+        if (choice == num)
+            std::cout << "Fun fact: Your integer was the last number in the file!";
+        else
+            std::cout << "The number " << num << " was the last number in the file";
+
+        inData.close();
+    }
 
 
-    cout << "Enter your favorite type of red wine (Ex: Cabernet Sauvignon): \n";
-    getline(cin, favorite_wine);
-
-    std::cout << "How many servings of sangria do you need? " << std::endl;
-    cin >> servings;
-    cin.ignore();
-
-    std::cout << "Sangria recipe using " << favorite_wine << " for " << servings << " servings:" << std::endl;
-
-    APPLES = (APPLES / 6) * servings;
-    ORANGES = (ORANGES / 6) * servings;
-    BRANDY = (BRANDY / 6) * servings;
-    ORANGE_JUICE = (ORANGE_JUICE / 6) * servings;
-    WINE = (WINE / 6) * servings;
-
-    cout << setprecision(2) << fixed;
-
-    cout << left << setw(15) << "Wine (ml): " << right << setw(7) << WINE << endl;
-    cout << left << setw(15) << "OJ (ml): " << right << setw(7) << ORANGE_JUICE << endl;
-    cout << left << setw(15) << "Brandy (ml): " << right << setw(7) << BRANDY << endl;
-    cout << left << setw(15) << "Orange (cups): " << right << setw(7) << ORANGES << endl;
-    cout << left << setw(15) << "Apples (cups): " << right << setw(7) << APPLES << endl;
-
-    cout << endl << "Press Enter key to end this program";
-    cin.get();
 
 }
+
+
+
+
+
+
+
+
+
